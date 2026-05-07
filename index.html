@@ -7,166 +7,215 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #d4af37; --dark: #05070a; }
-        body { background: var(--dark); color: #e5e7eb; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
-        .gold-grad { background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 45%, #b38728 70%, #fbf5b7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .btn-gold { background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728); color: #000; font-weight: 800; border-radius: 12px; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); }
-        .nav-item.active { color: var(--gold); transform: scale(1.1); }
+        body { background-color: #f7f8ff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; }
+        .red-gradient { background: linear-gradient(180deg, #ff4d4d 0%, #e60000 100%); }
+        .tab-active { color: #eb001b !important; font-weight: bold; }
+        .glass-card { background: white; border-radius: 15px; shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .bottom-nav { background: white; border-top: 1px solid #eee; position: fixed; bottom: 0; width: 100%; max-width: 448px; display: flex; justify-content: split; z-index: 1000; }
+        .section-page { display: none; padding-bottom: 80px; animation: fadeIn 0.3s ease-in-out; }
+        .section-active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .admin-secret { position: fixed; top: 0; left: 0; width: 40px; height: 40px; z-index: 2000; opacity: 0; }
     </style>
 </head>
-<body class="max-w-md mx-auto min-h-screen pb-24 shadow-2xl relative">
+<body class="max-w-md mx-auto min-h-screen relative">
 
-    <div class="glass sticky top-0 z-[100] p-5 flex justify-between items-center border-b border-white/5">
-        <div class="flex items-center gap-2">
-            <h1 class="text-2xl font-black italic gold-grad">CROWN 10XCLUB</h1>
-        </div>
-        <div class="flex gap-4">
-            <a href="https://t.me/crown10x100" target="_blank"><i class="fab fa-telegram text-blue-400 text-xl"></i></a>
-            <i class="fas fa-bell text-yellow-500 animate-pulse"></i>
-        </div>
-    </div>
+    <div id="admin-trigger" class="admin-secret"></div>
 
-    <div id="app" class="p-4">
-        <div class="glass rounded-[2.5rem] p-8 mb-6 relative overflow-hidden border-t border-white/10">
-            <p class="text-[10px] font-bold text-gray-500 uppercase mb-2">Total Asset</p>
-            <div class="flex justify-between items-end">
-                <h2 class="text-4xl font-black italic tracking-tighter">₹ <span id="user-bal">0.00</span></h2>
-                <button onclick="recharge()" class="btn-gold px-8 py-3 shadow-lg shadow-yellow-500/20">DEPOSIT</button>
+    <div id="page-home" class="section-page section-active">
+        <div class="red-gradient p-5 text-white flex justify-between items-center">
+            <h1 class="text-xl font-bold italic tracking-tighter">CROWN10XCLUB</h1>
+            <div class="flex gap-3">
+                <a href="https://t.me/crown10x100"><i class="fab fa-telegram text-xl"></i></a>
+                <i class="fas fa-download text-xl"></i>
             </div>
         </div>
 
-        <div class="glass rounded-[2rem] p-6 mb-6">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <p class="text-[9px] text-gray-500 font-bold uppercase mb-1">Period</p>
-                    <p id="pid" class="text-sm font-mono font-bold">20260508492</p>
+        <div class="p-4">
+            <img src="https://ossimg.55club.com/55club/banner/Banner_202401151804246k6f.png" class="rounded-2xl w-full shadow-lg">
+        </div>
+
+        <div class="mx-4 bg-white rounded-2xl p-4 shadow-sm">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-1 h-4 bg-red-600 rounded-full"></div>
+                    <span class="font-bold text-sm text-gray-700">Win Go 1Min</span>
                 </div>
                 <div class="text-right">
-                    <p class="text-[9px] text-yellow-500 font-bold uppercase mb-1">Time Left</p>
-                    <p id="timer" class="text-3xl font-black font-mono">03:00</p>
+                    <span id="timer" class="text-2xl font-black text-red-600 font-mono">03:00</span>
                 </div>
             </div>
+            <div class="grid grid-cols-3 gap-3 mb-4">
+                <button onclick="openBet('Green')" class="bg-[#18b660] text-white py-3 rounded-lg font-bold text-sm shadow-md">Green</button>
+                <button onclick="openBet('Violet')" class="bg-[#9c27b0] text-white py-3 rounded-lg font-bold text-sm shadow-md">Violet</button>
+                <button onclick="openBet('Red')" class="bg-[#fb4e4e] text-white py-3 rounded-lg font-bold text-sm shadow-md">Red</button>
+            </div>
+            <div class="grid grid-cols-5 gap-2">
+                <script>
+                    for(let i=0; i<10; i++) {
+                        let color = (i%2==0) ? 'text-red-500' : 'text-green-500';
+                        if(i==0 || i==5) color = 'text-purple-500';
+                        document.write(`<button onclick="openBet(${i})" class="bg-gray-50 border border-gray-100 py-2 rounded-lg font-bold ${color}">${i}</button>`);
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
 
-            <div class="grid grid-cols-3 gap-4">
-                <button onclick="bet('Green')" class="bg-green-600 py-5 rounded-2xl font-black text-xs active:scale-95 transition">GREEN</button>
-                <button onclick="bet('Violet')" class="bg-purple-600 py-5 rounded-2xl font-black text-xs active:scale-95 transition">VIOLET</button>
-                <button onclick="bet('Red')" class="bg-red-600 py-5 rounded-2xl font-black text-xs active:scale-95 transition">RED</button>
+    <div id="page-promotion" class="section-page p-4">
+        <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100">
+            <h2 class="text-xl font-bold text-red-600 mb-2 text-left">Promotion</h2>
+            <div class="bg-red-50 p-4 rounded-xl mb-6">
+                <p class="text-xs text-gray-500">Yesterday's Total Commission</p>
+                <h3 class="text-2xl font-black text-red-600">₹0.00</h3>
+            </div>
+            <div class="text-left space-y-4">
+                <div class="flex justify-between border-b pb-2"><span class="text-sm">Direct Subordinates</span> <span class="font-bold">0</span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-sm">Team Members</span> <span class="font-bold">0</span></div>
+            </div>
+            <button onclick="alert('Link Copied!')" class="w-full red-gradient text-white py-4 rounded-full mt-8 font-bold shadow-lg">INVITATION LINK</button>
+        </div>
+    </div>
+
+    <div id="page-account" class="section-page">
+        <div class="red-gradient p-10 pb-20 text-white flex items-center gap-4">
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-red-600 text-3xl font-bold">C</div>
+            <div>
+                <h3 class="text-xl font-bold">User_78180 <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full ml-2">VIP1</span></h3>
+                <p class="text-xs opacity-80 mt-1 italic">UID: 2841009</p>
+            </div>
+        </div>
+        
+        <div class="mx-4 -mt-10 bg-white rounded-2xl p-6 shadow-xl relative z-10">
+            <p class="text-gray-400 text-xs font-bold mb-1">Total Balance</p>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-black text-gray-800">₹ <span id="bal-acc">0.00</span></h2>
+                <i class="fas fa-sync-alt text-red-500" onclick="location.reload()"></i>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="changeTab('home')" class="bg-red-500 text-white py-3 rounded-full font-bold text-sm shadow-md">Deposit</button>
+                <button onclick="alert('Min Withdraw ₹500')" class="bg-gray-100 text-gray-600 py-3 rounded-full font-bold text-sm">Withdraw</button>
             </div>
         </div>
 
-        <div class="glass rounded-3xl overflow-hidden">
-            <div class="p-4 bg-white/5 font-bold text-xs gold-grad">GAME HISTORY</div>
-            <div id="record-list" class="text-[10px] text-gray-400"></div>
+        <div class="p-4 grid grid-cols-3 gap-2 text-center mt-4">
+            <div class="bg-white p-4 rounded-xl shadow-sm"><i class="fas fa-file-invoice text-red-400 mb-2"></i><p class="text-[10px]">Game History</p></div>
+            <div class="bg-white p-4 rounded-xl shadow-sm"><i class="fas fa-university text-blue-400 mb-2"></i><p class="text-[10px]">Bank Card</p></div>
+            <div class="bg-white p-4 rounded-xl shadow-sm"><i class="fas fa-headset text-green-400 mb-2"></i><p class="text-[10px]">Support</p></div>
         </div>
     </div>
 
-    <div id="admin-panel" class="hidden fixed inset-0 bg-black z-[500] p-6 overflow-y-auto">
-        <div class="flex justify-between items-center border-b border-red-500/30 pb-4 mb-6">
-            <h2 class="text-xl font-black text-red-500 italic">MASTER CONTROL</h2>
-            <button onclick="closeAdmin()" class="bg-red-600 px-4 py-1 rounded text-xs font-bold">EXIT</button>
-        </div>
-        <div class="glass p-5 rounded-2xl mb-6">
-            <p class="text-xs font-bold text-gray-400 mb-4 uppercase">Live Bets Monitoring</p>
-            <div class="flex justify-between text-green-500 font-bold mb-2"><span>Green Bets:</span> <span id="adm-green">₹0</span></div>
-            <div class="flex justify-between text-red-500 font-bold mb-4"><span>Red Bets:</span> <span id="adm-red">₹0</span></div>
-            <div class="border-t border-white/5 pt-2 flex justify-between italic text-yellow-500"><span>Expected Profit:</span> <span id="adm-profit">₹0</span></div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 mb-6">
-            <button onclick="forceNext('Green')" class="bg-green-900/40 text-green-500 p-4 rounded-xl border border-green-500/30 font-bold">FORCE GREEN</button>
-            <button onclick="forceNext('Red')" class="bg-red-900/40 text-red-500 p-4 rounded-xl border border-red-500/30 font-bold">FORCE RED</button>
-        </div>
-        <div class="glass p-5 rounded-2xl">
-            <p class="text-xs font-bold text-blue-400 mb-4 uppercase">Wallet Override</p>
-            <input id="add-val" type="number" placeholder="Enter Amount" class="w-full bg-white/5 p-4 rounded-xl mb-4 outline-none border border-white/10">
-            <button onclick="addMyBal()" class="w-full bg-blue-600 py-4 rounded-xl font-black">ADD BALANCE</button>
+    <div class="bottom-nav py-3">
+        <button onclick="changeTab('home')" id="tab-home" class="flex-1 flex flex-col items-center tab-active">
+            <i class="fas fa-home text-lg"></i><span class="text-[10px] mt-1 font-bold">Home</span>
+        </button>
+        <button onclick="changeTab('promotion')" id="tab-promotion" class="flex-1 flex flex-col items-center text-gray-400">
+            <i class="fas fa-share-alt text-lg"></i><span class="text-[10px] mt-1 font-bold">Promotion</span>
+        </button>
+        <button onclick="changeTab('account')" id="tab-account" class="flex-1 flex flex-col items-center text-gray-400">
+            <i class="fas fa-user text-lg"></i><span class="text-[10px] mt-1 font-bold">Mine</span>
+        </button>
+    </div>
+
+    <div id="bet-modal" class="hidden fixed inset-0 bg-black/60 z-[2000] flex items-end">
+        <div class="bg-white w-full rounded-t-3xl p-8 animate-slide-up">
+            <h3 id="bet-title" class="text-center font-bold text-xl mb-6">Join Green</h3>
+            <div class="flex gap-2 mb-8">
+                <button onclick="setBase(10)" class="flex-1 py-2 border rounded-lg active:bg-red-500 active:text-white">10</button>
+                <button onclick="setBase(100)" class="flex-1 py-2 border rounded-lg">100</button>
+                <button onclick="setBase(1000)" class="flex-1 py-2 border rounded-lg">1000</button>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="document.getElementById('bet-modal').classList.add('hidden')" class="flex-1 font-bold text-gray-400">Cancel</button>
+                <button onclick="confirmBet()" class="flex-[2] red-gradient text-white py-4 rounded-full font-bold shadow-lg">Total ₹<span id="bet-total">10</span></button>
+            </div>
         </div>
     </div>
 
-    <div class="fixed bottom-0 w-full max-w-md glass border-t border-white/5 flex justify-around py-5 z-[200]">
-        <i class="fas fa-home nav-item active" onclick="location.reload()"></i>
-        <a href="https://t.me/crown10x100" target="_blank"><i class="fas fa-users nav-item text-gray-600"></i></a>
-        <div class="bg-gradient-to-tr from-yellow-600 to-yellow-200 w-12 h-12 rounded-full -mt-10 flex items-center justify-center shadow-xl shadow-yellow-500/20" id="admin-trigger">
-            <i class="fas fa-shield-halved text-black"></i>
+    <div id="admin-panel" class="hidden fixed inset-0 bg-white z-[3000] p-6 overflow-y-auto">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h2 class="text-xl font-bold text-red-600">ADMIN CONTROL</h2>
+            <button onclick="document.getElementById('admin-panel').classList.add('hidden')" class="text-xs text-gray-400">CLOSE</button>
         </div>
-        <i class="fas fa-wallet nav-item text-gray-600"></i>
-        <i class="fas fa-user nav-item text-gray-600"></i>
+        <div class="bg-gray-100 p-4 rounded-xl mb-6">
+            <p class="text-xs font-bold mb-4">LIVE BETS (FORCED RESULTS)</p>
+            <div class="flex gap-2">
+                <button onclick="nextRes='Green';alert('Next Result: Green')" class="flex-1 bg-green-500 text-white py-2 rounded-lg text-xs">Force Green</button>
+                <button onclick="nextRes='Red';alert('Next Result: Red')" class="flex-1 bg-red-500 text-white py-2 rounded-lg text-xs">Force Red</button>
+            </div>
+        </div>
+        <input type="number" id="add-amt" placeholder="Amount to Add" class="w-full p-4 border rounded-xl mb-4">
+        <button onclick="addBal()" class="w-full red-gradient text-white py-4 rounded-xl font-bold">Add Balance to Mine</button>
     </div>
 
     <script>
-        let balance = parseFloat(localStorage.getItem('c10xc_bal')) || 0.00;
+        let balance = parseFloat(localStorage.getItem('c10club_bal')) || 0.00;
+        let base = 10;
         let timer = 180;
-        let nextResult = null;
-        let liveBets = { Green: 0, Red: 0 };
+        let nextRes = null;
 
         function updateUI() {
-            document.getElementById('user-bal').innerText = balance.toLocaleString('en-IN', {minimumFractionDigits: 2});
-            document.getElementById('adm-green').innerText = "₹" + liveBets.Green;
-            document.getElementById('adm-red').innerText = "₹" + liveBets.Red;
-            document.getElementById('adm-profit').innerText = "₹" + (liveBets.Green + liveBets.Red);
-            localStorage.setItem('c10xc_bal', balance);
+            document.getElementById('bal-acc').innerText = balance.toFixed(2);
+            document.getElementById('bet-total').innerText = base;
+            localStorage.setItem('c10club_bal', balance);
         }
 
+        function changeTab(id) {
+            document.querySelectorAll('.section-page').forEach(p => p.classList.remove('section-active'));
+            document.getElementById('page-'+id).classList.add('section-active');
+            
+            document.querySelectorAll('.bottom-nav button').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('text-gray-400');
+            });
+            document.getElementById('tab-'+id).classList.add('tab-active');
+        }
+
+        // Timer
         setInterval(() => {
             timer--;
-            if(timer <= 0) {
-                processResult();
-                timer = 180;
-                document.getElementById('pid').innerText = parseInt(document.getElementById('pid').innerText) + 1;
-                liveBets = { Green: 0, Red: 0 };
-            }
+            if(timer <= 0) timer = 180;
             let m = Math.floor(timer/60);
             let s = timer%60;
             document.getElementById('timer').innerText = `0${m}:${s<10?'0'+s:s}`;
-            updateUI();
         }, 1000);
 
-        function processResult() {
-            let res = nextResult || (liveBets.Green > liveBets.Red ? 'Red' : 'Green');
-            const list = document.getElementById('record-list');
-            const row = `<div class="flex justify-between p-4 border-b border-white/5">
-                <span>${document.getElementById('pid').innerText}</span>
-                <span class="font-bold text-${res.toLowerCase()}-500">${res.toUpperCase()}</span>
-                <span class="bg-white/10 px-2 rounded">${Math.floor(Math.random()*10)}</span>
-            </div>`;
-            list.insertAdjacentHTML('afterbegin', row);
-            nextResult = null;
+        function openBet(t) {
+            document.getElementById('bet-title').innerText = "Join " + t;
+            document.getElementById('bet-modal').classList.remove('hidden');
         }
 
-        function bet(type) {
-            if(timer <= 15) return alert("Market Locked!");
-            let a = prompt(`Join ${type}. Enter Amount:`, "10");
-            if(a && balance >= a) {
-                balance -= a;
-                liveBets[type === 'Violet' ? 'Green' : type] += parseInt(a);
+        function setBase(a) { base = a; updateUI(); }
+        
+        function confirmBet() {
+            if(balance >= base) {
+                balance -= base;
                 updateUI();
                 alert("Bet Placed!");
+                document.getElementById('bet-modal').classList.add('hidden');
             } else { alert("Insufficient Balance!"); }
         }
 
+        // ADMIN ACCESS (Long Press Top Left Corner for 3 Seconds)
         let pressTimer;
-        const trigger = document.getElementById('admin-trigger');
-        ['mousedown', 'touchstart'].forEach(ev => trigger.addEventListener(ev, () => {
+        document.getElementById('admin-trigger').addEventListener('touchstart', () => {
             pressTimer = setTimeout(() => {
-                if(prompt("Admin PIN:") === "9012") document.getElementById('admin-panel').classList.remove('hidden');
+                if(prompt("Admin Key:") === "9012") document.getElementById('admin-panel').classList.remove('hidden');
             }, 3000);
-        }));
-        ['mouseup', 'mouseleave', 'touchend'].forEach(ev => trigger.addEventListener(ev, () => clearTimeout(pressTimer)));
+        });
+        document.getElementById('admin-trigger').addEventListener('touchend', () => clearTimeout(pressTimer));
 
-        function forceNext(c) { nextResult = c; alert("Forced: " + c); }
-        function closeAdmin() { document.getElementById('admin-panel').classList.add('hidden'); }
-        function addMyBal() { 
-            let v = document.getElementById('add-val').value;
-            if(v) { balance += parseInt(v); updateUI(); alert("Added!"); }
+        function addBal() {
+            let a = document.getElementById('add-amt').value;
+            if(a) { balance += parseInt(a); updateUI(); alert("Balance Added!"); }
         }
 
         function recharge() {
-            let a = prompt("Enter Amount:");
+            let a = prompt("Enter Deposit Amount:");
             if(a >= 100) window.location.href = `upi://pay?pa=amaanamaan868-1@oksbi&pn=Crown10Xclub&am=${a}&cu=INR`;
         }
 
         updateUI();
-        for(let i=0; i<5; i++) processResult();
     </script>
 </body>
 </html>
